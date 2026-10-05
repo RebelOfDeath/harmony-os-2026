@@ -1,0 +1,836 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Building AI Experiences Developers Can Trust and Want to Use</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body data-beat="cover">
+
+<!-- ============================================================
+     STAGE: fixed, full viewport. Everything visual lives here.
+     The 1600x900 #canvas is scaled to fit the window.
+     ============================================================ -->
+<div id="stage" aria-hidden="true">
+  <div id="bg">
+    <div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div>
+    <div class="grain"></div>
+  </div>
+
+  <div id="canvas">
+    <div id="camera">
+      <svg id="world" viewBox="0 0 1600 900" width="1600" height="900">
+        <defs>
+          <radialGradient id="screenGlow" cx="50%" cy="50%" r="50%">
+            <stop offset="0" stop-color="#087CFA" stop-opacity=".35"/>
+            <stop offset="1" stop-color="#087CFA" stop-opacity="0"/>
+          </radialGradient>
+          <radialGradient id="lampGlow" cx="50%" cy="50%" r="50%">
+            <stop offset="0" stop-color="#FDB60D" stop-opacity=".22"/>
+            <stop offset="1" stop-color="#FDB60D" stop-opacity="0"/>
+          </radialGradient>
+        </defs>
+
+        <g id="room">
+          <ellipse id="glow" cx="800" cy="500" rx="560" ry="330" fill="url(#screenGlow)" opacity="0"/>
+          <g id="window" class="dim">
+            <rect class="draw" x="1140" y="120" width="320" height="280" rx="4"/>
+            <line class="draw" x1="1300" y1="120" x2="1300" y2="400"/>
+            <line class="draw" x1="1140" y1="250" x2="1460" y2="250"/>
+            <circle class="draw" cx="1402" cy="176" r="18"/>
+            <path class="draw" d="M1140 400 V335 L1160 312 L1180 335 V322 H1188 L1204 300 L1220 322 H1228 V400 M1228 400 V340 L1246 318 L1264 340 V400 M1264 400 V330 H1272 L1288 306 L1304 330 H1312 V400 M1312 400 V345 L1330 322 L1348 345 V400 M1348 400 V326 H1356 L1372 302 L1388 326 H1396 V400 M1396 400 V338 L1414 315 L1432 338 V400 M1432 400 V330 L1446 312 L1460 330"/>
+            <path class="draw" d="M1150 388 q10 -6 20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0"/>
+          </g>
+          <g id="desk">
+            <path class="draw" d="M230 600 H1370"/>
+            <path class="draw" d="M230 600 L60 790 H1540 L1370 600"/>
+            <path class="draw" d="M60 790 V812 H1540 V790"/>
+            <path class="draw" d="M92 812 V900 M1508 812 V900"/>
+          </g>
+          <g id="plant">
+            <path class="draw" d="M268 612 L278 566 H342 L352 612 Z"/>
+            <path class="draw" d="M310 566 C300 522 272 500 246 486 M310 566 C316 512 332 484 362 462 M310 566 C308 520 300 492 306 446 M246 486 C262 474 284 488 290 512 M362 462 C352 478 332 488 322 510 M306 446 C318 462 318 482 310 500"/>
+          </g>
+          <g id="lamp">
+            <ellipse id="lampLight" cx="1210" cy="690" rx="190" ry="60" fill="url(#lampGlow)" opacity="0"/>
+            <ellipse class="draw" cx="1330" cy="650" rx="48" ry="11"/>
+            <path class="draw" d="M1330 648 L1372 520 L1270 452"/>
+            <path class="draw" d="M1270 452 L1222 488 C1236 512 1262 522 1286 512 Z"/>
+            <circle class="draw" cx="1372" cy="520" r="6"/>
+          </g>
+          <g id="mug">
+            <path class="draw" d="M1136 690 V742 C1136 754 1176 754 1176 742 V690"/>
+            <ellipse class="draw" cx="1156" cy="690" rx="20" ry="6"/>
+            <path class="draw" d="M1176 702 C1194 702 1194 730 1176 730"/>
+            <path class="steam" d="M1148 676 C1142 664 1154 656 1148 642"/>
+            <path class="steam s2" d="M1164 678 C1158 666 1170 658 1164 644"/>
+          </g>
+        </g>
+
+        <g id="laptop">
+          <path class="draw solid" d="M562 616 H1038 L1096 690 H504 Z"/>
+          <g id="keys" class="dim">
+            <path d="M584 630 H1016 M574 644 H1026 M564 658 H1036"/>
+            <path d="M758 668 H842 L848 684 H752 Z"/>
+          </g>
+          <rect class="draw solid" x="562" y="336" width="476" height="280" rx="14"/>
+          <rect id="display" x="576" y="350" width="448" height="252" rx="3"/>
+          <circle cx="800" cy="343" r="2" class="dimfill"/>
+        </g>
+
+        <g id="dev">
+          <g id="armsType">
+            <path class="solid" d="M462 780 C540 730 620 680 690 646 L704 661 C640 694 566 746 500 804 Z"/>
+            <ellipse class="solid hand hl" cx="702" cy="650" rx="15" ry="9"/>
+            <path class="solid" d="M530 806 C624 750 726 690 818 650 L832 666 C748 704 652 772 584 836 Z"/>
+            <ellipse class="solid hand hr" cx="830" cy="655" rx="17" ry="10"/>
+          </g>
+          <g id="armsRest" opacity="0">
+            <path class="solid" d="M540 800 C584 790 628 786 668 790 L666 808 C626 806 586 812 556 826 Z"/>
+            <ellipse class="solid" cx="674" cy="799" rx="17" ry="10"/>
+          </g>
+          <path class="solid" d="M196 900 C198 828 236 770 304 754 L466 754 C536 770 574 828 578 900 Z"/>
+          <path class="dimline" d="M387 778 V900 M318 830 C334 846 350 852 366 852"/>
+          <g id="head">
+            <path class="solid" d="M300 744 C300 702 470 702 472 744 C440 772 330 772 300 744 Z"/>
+            <path class="solid" d="M360 704 L358 740 H414 L412 704"/>
+            <ellipse class="solid" cx="385" cy="640" rx="60" ry="72"/>
+            <path class="solid" d="M327 628 C320 574 354 554 388 554 C426 554 452 580 444 630 C436 604 418 594 392 596 C362 598 338 606 327 628 Z"/>
+            <path class="dimline" d="M348 580 C370 590 400 590 426 580"/>
+            <path class="solid" d="M326 640 C314 636 312 662 327 666 M444 640 C456 636 458 662 443 666"/>
+            <g class="accent">
+              <path d="M318 642 C312 556 458 556 452 642"/>
+              <rect x="304" y="624" width="20" height="46" rx="9"/>
+              <rect x="446" y="624" width="20" height="46" rx="9"/>
+            </g>
+          </g>
+        </g>
+      </svg>
+
+      <!-- The laptop display. The IDE is authored at 1600x900 and scaled into the 448x252 display. -->
+      <div id="screen">
+        <div id="ide">
+          <div class="ide-top">
+            <span class="lights"><i></i><i></i><i></i></span>
+            <span class="proj"><b class="pi">HA</b>harmony-app <em>⌄</em></span>
+            <span class="branch">⎇ main <em>⌄</em></span>
+            <span class="spacer"></span>
+            <span class="runcfg">test_stats <em>⌄</em></span>
+            <span class="tbtn run">▶</span>
+            <span class="tbtn ai">✦</span>
+          </div>
+          <div class="ide-body">
+            <div class="ide-strip">
+              <i class="on">▤</i><i>⎇</i><i>◎</i><i>⋯</i>
+            </div>
+            <div class="ide-tree">
+              <div class="tt">Project</div>
+              <div class="tr open">▾ <span class="fo">harmony-app</span></div>
+              <div class="tr l1 open">▾ <span class="fo">src</span></div>
+              <div class="tr l2" id="t-stats"><span class="py">py</span> stats.py <b class="mk"></b></div>
+              <div class="tr l2" id="t-test"><span class="py">py</span> test_stats.py <b class="mk"></b></div>
+              <div class="tr l1 open">▾ <span class="fo">humaneval</span></div>
+              <div class="tr l2" id="t-he"><span class="py">py</span> task_47.py</div>
+              <div class="tr l1"><span class="md">md</span> README.md</div>
+              <div class="tr l1"><span class="tm">⚙</span> pyproject.toml</div>
+            </div>
+            <div class="ide-main">
+              <div class="ide-tabs">
+                <span class="tab" id="tab-stats"><span class="py">py</span> stats.py</span>
+                <span class="tab" id="tab-he"><span class="py">py</span> task_47.py</span>
+                <span class="tab" id="tab-test"><span class="py">py</span> test_stats.py</span>
+              </div>
+              <div class="ide-editor">
+                <!-- stats.py -->
+                <div class="file" id="f-stats">
+                  <div class="ln"><i>1</i><span><b class="k">from</b> typing <b class="k">import</b> Sequence</span></div>
+                  <div class="ln"><i>2</i><span></span></div>
+                  <div class="ln"><i>3</i><span><u class="caret" id="c3"></u></span></div>
+                  <div class="ln"><i>4</i><span class="type" id="ty4"><b class="k">def</b> <b class="f">median</b>(values: Sequence[<b class="b">float</b>]) -&gt; <b class="b">float</b>:</span><u class="caret" id="c4"></u></div>
+                  <div class="ln"><i>5</i><span class="type" id="ty5">    <b class="d">"""Return the median of values."""</b></span><u class="caret" id="c5"></u></div>
+                  <div class="ln sug s1"><i>6</i><span class="real">    s = <b class="b">sorted</b>(values)</span><u class="caret" id="c6"></u></div>
+                  <div class="ln sug s1"><i>7</i><span class="real">    n = <b class="b">len</b>(s)</span></div>
+                  <div class="ln sug s1"><i>8</i><span class="real">    mid = n // <b class="n">2</b></span></div>
+                  <div class="ln sug s1"><i>9</i><span class="real">    <b class="k">if</b> n % <b class="n">2</b>:</span></div>
+                  <div class="ln sug s1"><i>10</i><span class="real">        <b class="k">return</b> s[mid]</span></div>
+                  <div class="ln sug s1"><i>11</i><span class="real">    <b class="k">return</b> (s[mid - <b class="n">1</b>] + s[mid]) / <b class="n">2</b></span></div>
+                  <div class="ln late"><i>12</i><span></span></div>
+                  <div class="ln late"><i>13</i><span></span></div>
+                  <div class="ln late"><i>14</i><span class="type" id="ty14"><b class="k">def</b> <b class="f">mode</b>(values: Sequence[<b class="b">float</b>]) -&gt; <b class="b">float</b>:</span><u class="caret" id="c14"></u></div>
+                  <div class="ln sug s2 late rel-good"><i>15</i><span class="real">    counts = Counter(values)</span><b class="conf" id="conf">confidence 0.83</b></div>
+                  <div class="ln sug s2 late rel-warn"><i>16</i><span class="real">    <b class="k">return</b> <b class="b">max</b>(counts, key=counts.get)</span>
+                    <span class="reltip" id="reltip">⚠ Review: <code>Counter</code> is never imported</span></div>
+                  <div class="tabhint" id="tabhint"><kbd>Tab</kbd> accept</div>
+                </div>
+
+                <!-- humaneval/task_47.py -->
+                <div class="file" id="f-he">
+                  <div class="ln"><i>1</i><span><b class="c"># HumanEval/47</b></span></div>
+                  <div class="ln"><i>2</i><span><b class="k">def</b> <b class="f">median</b>(l: <b class="b">list</b>):</span></div>
+                  <div class="ln"><i>3</i><span>    <b class="d">"""Return median of elements in the list l.</b></span></div>
+                  <div class="ln"><i>4</i><span>    <b class="d">&gt;&gt;&gt; median([3, 1, 2, 4, 5])</b></span></div>
+                  <div class="ln"><i>5</i><span>    <b class="d">3</b></span></div>
+                  <div class="ln" id="he6"><i>6</i><span>    <b class="d">&gt;&gt;&gt; median([-10, 4, 6, 1000, 10, 20])</b></span></div>
+                  <div class="ln" id="he7"><i>7</i><span>    <b class="d wrong" id="he15">15.0</b><b class="right" id="he8">8.0</b></span>
+                    <span class="he-note" id="henote">sorted: [-10, 4, 6, 10, 20, 1000] → (6 + 10) / 2 = 8.0</span></div>
+                  <div class="ln"><i>8</i><span>    <b class="d">"""</b></span></div>
+                </div>
+
+                <!-- test_stats.py, written by the agent -->
+                <div class="file" id="f-test">
+                  <div class="ln ag"><i>1</i><span><b class="k">import</b> pytest</span></div>
+                  <div class="ln ag"><i>2</i><span><b class="k">from</b> stats <b class="k">import</b> median</span></div>
+                  <div class="ln ag"><i>3</i><span></span></div>
+                  <div class="ln ag"><i>4</i><span></span></div>
+                  <div class="ln ag"><i>5</i><span><b class="k">def</b> <b class="f">test_odd</b>():</span></div>
+                  <div class="ln ag"><i>6</i><span>    <b class="k">assert</b> median([<b class="n">3</b>, <b class="n">1</b>, <b class="n">2</b>]) == <b class="n">2</b></span></div>
+                  <div class="ln ag"><i>7</i><span></span></div>
+                  <div class="ln ag"><i>8</i><span><b class="k">def</b> <b class="f">test_even</b>():</span></div>
+                  <div class="ln ag"><i>9</i><span>    <b class="k">assert</b> median([<b class="n">1</b>, <b class="n">2</b>, <b class="n">3</b>, <b class="n">4</b>]) == <b class="n">2.5</b></span></div>
+                  <div class="ln ag"><i>10</i><span></span></div>
+                  <div class="ln ag"><i>11</i><span><b class="k">def</b> <b class="f">test_task_47</b>():</span></div>
+                  <div class="ln ag"><i>12</i><span>    <b class="k">assert</b> median([-<b class="n">10</b>, <b class="n">4</b>, <b class="n">6</b>, <b class="n">1000</b>, <b class="n">10</b>, <b class="n">20</b>]) == <b class="n">8.0</b></span></div>
+                  <div class="ln ag"><i>13</i><span></span></div>
+                  <div class="ln ag"><i>14</i><span><b class="k">def</b> <b class="f">test_empty</b>():</span></div>
+                  <div class="ln ag"><i>15</i><span>    <b class="k">with</b> pytest.raises(<b class="b">ValueError</b>):</span></div>
+                  <div class="ln ag"><i>16</i><span>        median([])</span></div>
+                </div>
+              </div>
+              <div class="ide-bottom" id="ide-bottom">
+                <div class="bt-head"><span class="on">Terminal</span><span>Problems</span></div>
+                <div class="bt-body">
+                  <div class="tl" id="term1"><b class="pr">$</b> pytest -q</div>
+                  <div class="tl" id="term2"><b class="okc">...</b><b class="bad">F</b>   <b class="bad">1 failed</b>, 3 passed in 0.04s</div>
+                  <div class="tl" id="term3"><b class="pr">$</b> pytest -q</div>
+                  <div class="tl" id="term4"><b class="okc">....</b>  <b class="okc">4 passed</b> in 0.03s</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="ide-ai" id="ide-ai">
+              <div class="ai-head"><span class="ai-title" id="ai-title">✦ AI Assistant</span><span class="ai-x">⋯</span></div>
+              <div class="ai-body">
+                <!-- chat mode -->
+                <div class="chat" id="chat">
+                  <div class="msg me" id="m1">Is this right for even-length lists?</div>
+                  <div class="msg bot" id="m2">Yes. With an even count it averages the two middle values:
+                    <pre><b class="f">median</b>([<b class="n">1</b>, <b class="n">2</b>, <b class="n">3</b>, <b class="n">4</b>])  <b class="c"># 2.5</b></pre>
+                    <span class="btns"><span>Insert</span><span>Copy</span></span>
+                  </div>
+                  <div class="msg me" id="m3">What's the median of [-10, 4, 6, 1000, 10, 20]?</div>
+                  <div class="msg bot bad" id="m4"><span class="who">ChatGPT-3.5 Turbo, Dec 2023</span>The median is <b class="hl15">15.0</b>.</div>
+                </div>
+                <!-- agent mode -->
+                <div class="agent" id="agent">
+                  <div class="msg me">Make <code>median()</code> reject empty input and add tests.</div>
+                  <div class="plan">
+                    <div class="pl" id="p1"><i></i>Read <code>stats.py</code></div>
+                    <div class="pl" id="p2"><i></i>Write tests in <code>test_stats.py</code></div>
+                    <div class="pl" id="p3"><i></i>Run tests</div>
+                    <div class="pl" id="p4"><i></i>Fix <code>median()</code> for empty input</div>
+                    <div class="pl" id="p5"><i></i>Run tests again</div>
+                  </div>
+                  <div class="review" id="review">
+                    <div><b>Ready for review</b><br>2 files changed</div>
+                    <span class="btns"><span class="pri">Review diff</span><span>Accept all</span></span>
+                  </div>
+                </div>
+              </div>
+              <div class="ai-input"><span id="ai-ph">Ask anything…</span><span class="send">↑</span></div>
+            </div>
+          </div>
+          <div class="ide-status">
+            <span>harmony-app › src › stats.py</span><span class="spacer"></span>
+            <span>Python 3.12</span><span>UTF-8</span><span id="st-ai">✦ AI ready</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- world-space HTML (moves with the camera) -->
+      <div id="agents">
+        <div class="aw" id="aw1"><div class="aw-h"><i></i>agent: fix flaky test</div><div class="aw-log"><p>read test_io.py</p><p>run pytest -k io</p><p>patch retry()</p></div><div class="aw-bar"><b></b></div></div>
+        <div class="aw" id="aw2"><div class="aw-h"><i></i>agent: migrate to ArkTS</div><div class="aw-log"><p>scan 214 files</p><p>convert 12 / 214</p><p>build ok</p></div><div class="aw-bar"><b></b></div></div>
+        <div class="aw" id="aw3"><div class="aw-h"><i></i>agent: write docs</div><div class="aw-log"><p>outline README</p><p>draft API.md</p><p>check links</p></div><div class="aw-bar"><b></b></div></div>
+      </div>
+    </div><!-- /camera -->
+
+    <div id="dimmer"></div>
+
+    <!-- ============ OVERLAYS (canvas space, 1600x900) ============ -->
+    <div id="overlays">
+
+      <!-- About me -->
+      <div class="ov" id="ov-me">
+        <div class="ring"></div>
+        <img src="img/roham.jpg" alt="Roham Koohestani">
+        <span class="chip c1">JetBrains Research, HAX</span>
+        <span class="chip c2">TU Delft, MSc CS</span>
+        <span class="chip c4">AI4SE and human-AI interaction</span>
+      </div>
+
+      <!-- 273 benchmarks unit chart -->
+      <div class="ov panel" id="ov-bench">
+        <div class="ptitle">AI4SE benchmarks by task, 2014 to Aug 2025 <span>one square is one benchmark</span></div>
+        <svg id="bench-svg" width="640" height="400" viewBox="0 0 640 400"></svg>
+        <div class="legend" id="bench-legend"></div>
+        <div class="stat big s-2024"><b>71</b><span>published in 2024 alone</span></div>
+        <div class="stat big s-247"><b>247</b><span>studies reviewed</span></div>
+      </div>
+
+      <!-- BenchFrame -->
+      <div class="ov panel" id="ov-bf">
+        <div class="ptitle">BenchFrame: repairing a benchmark <span>case study on HumanEval, then MBPP</span></div>
+        <div class="bf-sub">What the review of HumanEval kept finding</div>
+        <div class="issues">
+          <span>wrong or suboptimal reference solutions</span>
+          <span>tests that repeat the prompt's own examples</span>
+          <span>types on only 30 of 164 problems</span>
+          <span>ambiguous, inconsistent descriptions</span>
+          <span>hard to translate to other languages</span>
+        </div>
+        <div class="bf-sub">The protocol</div>
+        <div class="bf-steps">
+          <div class="bf"><em>1</em><b>Review</b><span>standardised observations for every task</span></div>
+          <i class="bf-arr">→</i>
+          <div class="bf"><em>2</em><b>Modify</b><span>fix solutions, add types, edge cases and spec-based tests</span></div>
+          <i class="bf-arr">→</i>
+          <div class="bf"><em>3</em><b>Peer review</b><span>an independent reviewer checks every change</span></div>
+          <i class="bf-arr">→</i>
+          <div class="bf"><em>4</em><b>Evaluate</b><span>re-run the models on the repaired benchmark</span></div>
+        </div>
+        <div class="bf-note">An agentic pipeline can reproduce the manual repair, and reviewers often preferred its output.</div>
+      </div>
+
+      <!-- HumanEval vs HumanEvalNext -->
+      <div class="ov panel" id="ov-he">
+        <div class="ptitle">pass@1 on HumanEval vs. HumanEvalNext <span>10 open code models</span></div>
+        <div class="legend"><span><i style="background:#7D7D7D"></i>HumanEval</span><span><i style="background:#FF318C"></i>HumanEvalNext</span></div>
+        <svg id="he-svg" width="900" height="548" viewBox="0 0 900 548"></svg>
+        <div class="stat big s-drop"><b>−31.2</b><span>points of pass@1, on average</span></div>
+      </div>
+
+      <!-- Rank reshuffle -->
+      <div class="ov panel" id="ov-rank">
+        <div class="ptitle">Leaderboard rank, before and after the repair <span>same 10 models</span></div>
+        <svg id="rank-svg" width="900" height="570" viewBox="0 0 900 570"></svg>
+      </div>
+
+      <!-- Code4Me pipeline -->
+      <div class="ov" id="ov-c4m">
+        <svg class="pipes" width="1600" height="900" viewBox="0 0 1600 900">
+          <path d="M850 468 H960"/>
+          <path d="M1220 468 H1310"/>
+          <g id="particles"></g>
+        </svg>
+        <div class="c4m-brand">Code4Me V2 is open source</div>
+        <div class="node n-plugin"><b>Plugin</b><span>JetBrains IDEs</span><span>completion and chat</span></div>
+        <div class="node n-server"><b>Server</b><span>FastAPI, Celery, Redis</span><span>PostgreSQL</span><span>model inference</span></div>
+        <div class="node n-ana"><b>Analytics</b>
+          <div class="mini"><i style="height:40%"></i><i style="height:62%"></i><i style="height:48%"></i><i style="height:76%"></i><i style="height:58%"></i></div>
+          <span>acceptance, latency</span><span>A/B studies</span></div>
+        <div class="researcher">
+          <svg width="60" height="70" viewBox="0 0 60 70"><circle cx="30" cy="20" r="13"/><path d="M6 68 C8 46 18 38 30 38 C42 38 52 46 54 68"/></svg>
+          <span>researcher</span></div>
+      </div>
+
+      <!-- Code4Me module tree -->
+      <div class="ov panel" id="ov-modules">
+        <div class="ptitle">Plugin architecture <span>every signal is a module</span></div>
+        <svg class="tree-lines" width="900" height="460" viewBox="0 0 900 460">
+          <path d="M495 86 V110 H180 V150 M540 110 V150 M495 110 H810 V150"/>
+          <path d="M180 196 V250 H90 V290 M180 250 H270 V290"/>
+          <path d="M540 196 V250 H450 V290 M540 250 H630 V290"/>
+          <path d="M810 196 V290 M810 350 V390"/>
+        </svg>
+        <div class="mn root" style="left:495px;top:40px">Module Manager</div>
+        <div class="mn agg" style="left:180px;top:150px">Behavioral telemetry</div>
+        <div class="mn agg" style="left:540px;top:150px">Context</div>
+        <div class="mn agg" style="left:810px;top:150px">After insertion</div>
+        <div class="mn leaf" style="left:90px;top:290px">Typing speed</div>
+        <div class="mn leaf" style="left:270px;top:290px">Time since last completion</div>
+        <div class="mn leaf" style="left:450px;top:290px">File context</div>
+        <div class="mn leaf" style="left:630px;top:290px">Project context</div>
+        <div class="mn leaf" style="left:810px;top:290px">Acceptance tracking</div>
+        <div class="mn leaf yours" style="left:810px;top:390px">+ your module</div>
+        <div class="stat s-lat"><b>~200 ms</b><span>average completion latency</span></div>
+      </div>
+
+      <!-- Reliability diagram -->
+      <div class="ov panel" id="ov-rel">
+        <div class="ptitle">Reliability diagram <span>schematic</span></div>
+        <svg id="rel-svg" width="520" height="520" viewBox="0 0 520 520"></svg>
+        <div class="legend rel-leg"><span><i style="background:#FE2857"></i>raw confidence</span><span><i style="background:#087CFA"></i>after Platt scaling</span><span><i class="dash"></i>perfectly calibrated</span></div>
+        <div class="facts">
+          <div><b>24.7M</b><span>real completions</span></div>
+          <div><b>760K</b><span>devices</span></div>
+          <div><b>6</b><span>months</span></div>
+          <div><b>3</b><span>languages: Java, Python, Kotlin</span></div>
+        </div>
+      </div>
+
+      <!-- Brier skill score -->
+      <div class="ov panel" id="ov-bss">
+        <div class="ptitle">Does calibrated confidence predict acceptance? <span>Brier skill score, where 0 means no better than the average acceptance rate</span></div>
+        <svg id="bss-svg" width="960" height="470" viewBox="0 0 960 470"></svg>
+      </div>
+
+      <!-- Survey -->
+      <div class="ov panel small" id="ov-survey">
+        <div class="ptitle">Where should the signal live? <span>survey, n = 148 developers</span></div>
+        <div class="stack">
+          <i style="width:51.4%;background:#087CFA"></i><i style="width:37.2%;background:#6B57FF"></i><i style="width:11.4%;background:#7D7D7D"></i>
+        </div>
+        <div class="stack-lab">
+          <span style="width:51.4%"><b>51.4%</b> in-editor generation</span>
+          <span style="width:37.2%"><b>37.2%</b> autocompletion</span>
+          <span style="width:11.4%"><b>11.5%</b> neither</span>
+        </div>
+      </div>
+
+      <!-- Acceptance spread -->
+      <div class="ov panel" id="ov-spread">
+        <div class="ptitle">Per-developer acceptance rate <span>dots are schematic; range from Feb 2026 telemetry</span></div>
+        <svg id="spread-svg" width="920" height="300" viewBox="0 0 920 300"></svg>
+        <div class="stat big s-nine"><b>9 in 10</b><span>suggestions shown are never accepted (9.72% accepted)</span></div>
+      </div>
+
+      <!-- Personalization experiments (Table II) -->
+      <div class="ov panel" id="ov-exp">
+        <div class="ptitle">Share of suggestions filtered, at 5% false negatives <span>higher is better</span></div>
+        <svg id="exp-svg" width="900" height="400" viewBox="0 0 900 400"></svg>
+        <div class="exp-note"><b>Not a matched comparison.</b> Each row is a separate experiment series with its own developers and row filters. The sequence models kept only developers with enough history: 4.6% of them.</div>
+      </div>
+
+      <!-- LLM-driven research loop -->
+      <div class="ov panel" id="ov-loop">
+        <div class="ptitle">An LLM agent as the researcher <span>Claude Opus 4.6 in an in-house auto-research harness</span></div>
+        <div class="loop">
+          <div class="lp"><b>Propose</b><span>one atomic change to pipeline.py</span></div>
+          <i class="lp-arr">→</i>
+          <div class="lp"><b>Train</b><span>one machine, 45 min budget</span></div>
+          <i class="lp-arr">→</i>
+          <div class="lp"><b>Score</b><span>filter rate at 5% false negatives</span></div>
+          <i class="lp-arr">→</i>
+          <div class="lp"><b>Keep or roll back</b><span>against the current champion</span></div>
+        </div>
+        <svg class="loop-back" width="900" height="44" viewBox="0 0 900 44"><path d="M790 4 V24 H100 V8" marker-end="url(#loopArr)"/><defs><marker id="loopArr" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#FF45ED"/></marker></defs><text x="445" y="40" text-anchor="middle">a lab notebook feeds each next generation</text></svg>
+        <div class="frozen"><b>Frozen:</b> the data pipeline and the metric, so the agent cannot change the reward.</div>
+        <svg id="search-svg" width="900" height="190" viewBox="0 0 900 190"></svg>
+        <div class="gens">
+          <div class="gen"><b id="gen-count">0</b><span>generations</span></div>
+          <div class="gen g2"><b>0</b><span>beat the champion</span></div>
+          <div class="gen g3"><b>$60, 20 h</b><span>per 50 generations</span></div>
+        </div>
+      </div>
+
+      <!-- Event stream -->
+      <div class="ov panel" id="ov-stream">
+        <div class="ptitle">What the model actually sees <span>1,000 raw IDE events, to scale</span></div>
+        <svg id="stream-svg" width="940" height="220" viewBox="0 0 940 220"></svg>
+        <div class="facts f3">
+          <div><b>2.16%</b><span>of raw rows survive the label filter</span></div>
+          <div><b>0.06</b><span>lag-1 autocorrelation of accepts</span></div>
+          <div><b>180 min</b><span>median session length, under a nominal 10 min inactivity cutoff</span></div>
+        </div>
+      </div>
+
+      <!-- Era timeline -->
+      <div class="ov" id="ov-timeline">
+        <div class="era e1"><b>Completion</b><span>the next few lines</span></div>
+        <div class="era e2"><b>Chat</b><span>a question, an answer</span></div>
+        <div class="era e3"><b>Agents</b><span>a whole task</span></div>
+        <div class="era-line"><i></i></div>
+      </div>
+
+      <!-- Code4Me for agents -->
+      <div class="ov" id="ov-c4ma">
+        <svg class="c4ma-link" width="1600" height="900" viewBox="0 0 1600 900"><path d="M1142 500 C1182 520 1186 560 1214 580"/></svg>
+        <div class="node n-c4ma"><em>in progress</em><b>Code4Me for agents</b><span>open collection of agent sessions:</span><span>prompts, plans, tool calls, diffs, reviews</span><span>accessible to researchers</span></div>
+      </div>
+
+      <!-- An agent run going wrong -->
+      <div class="ov panel term" id="ov-fail">
+        <div class="ptitle">agent: fix flaky test_io <span>illustrative run</span></div>
+        <div class="fl"><i>01</i><code>run_tests</code><b class="x">✕ test_io failed</b></div>
+        <div class="fl"><i>02</i><code>edit retry()</code></div>
+        <div class="fl"><i>03</i><code>run_tests</code><b class="x">✕ test_io failed</b></div>
+        <div class="fl"><i>04</i><code>edit retry()</code></div>
+        <div class="fl"><i>05</i><code>run_tests</code><b class="x">✕ test_io failed</b><span class="tag t-loop">same loop 6 times, no progress</span></div>
+        <div class="fl"><i>06</i><code>edit test_io.py</code><b class="w">removed an assertion</b></div>
+        <div class="fl"><i>07</i><code>run_tests</code><b class="ok">✓ passed</b></div>
+        <div class="fl"><i>08</i><code>git commit</code><span class="tag t-game">test weakened until it passed</span></div>
+        <div class="fl-foot">Each step looks reasonable on its own. The run as a whole is not.</div>
+      </div>
+
+      <!-- Trace to MDP -->
+      <div class="ov panel" id="ov-mdp">
+        <div class="ptitle">From traces to a checkable model <span>illustrative</span></div>
+        <div class="trace" id="trace">
+          <span>read_file</span><span>edit</span><span class="bad">run_tests ✕</span><span>edit</span><span class="bad">run_tests ✕</span><span>edit</span><span class="ok">run_tests ✓</span><span>commit</span>
+        </div>
+        <svg id="mdp-svg" width="900" height="400" viewBox="0 0 900 400"></svg>
+        <div class="query" id="query"><code>P( reach success within 10 steps ) ≥ 0.90 ?</code><b id="qres">0.82, below threshold: alert</b></div>
+      </div>
+
+      <!-- Assurance lineage -->
+      <div class="ov" id="ov-lineage">
+        <div class="lg-line"><i></i></div>
+        <div class="lg" style="--c:#07C3F2"><i class="dot"></i><b>Can we check an agent while it runs?</b><p>Learn a Markov model of its behaviour online, and model-check it.</p><em>AgentGuard, 2025</em></div>
+        <div class="lg" style="--c:#21D789"><i class="dot"></i><b>Who decides what the states are?</b><p>Learn the abstraction from traces, and refine it with counterexamples.</p><em>TriCEGAR, with TU Delft, 2026</em></div>
+        <div class="lg" style="--c:#AF1DF5"><i class="dot"></i><b>What can we prove at all?</b><p>An agent's memory design sets the limit, from regular to undecidable.</p><em>Memory-constrained trace models, under review</em></div>
+        <div class="lg" style="--c:#FC801D"><i class="dot"></i><b>When it fails, where and why?</b><p>Structured outcome codes for multi-agent systems, built into Koog.</p><em>ATP in Koog, in progress</em></div>
+      </div>
+
+      <!-- Bet 1: personalization -->
+      <div class="ov" id="ov-profile">
+        <svg class="plink" width="1600" height="900" viewBox="0 0 1600 900"><path id="plink" d="M640 560 C700 380 1000 260 1190 250"/><path id="plink2" d="M1190 470 C1120 470 1060 460 1020 440"/></svg>
+        <div class="profile">
+          <div class="ph">What your agent could learn about you</div>
+          <div class="pi"><i style="--c:#FF318C"></i>prefers small, reviewable diffs</div>
+          <div class="pi"><i style="--c:#087CFA"></i>reads the tests first</div>
+          <div class="pi"><i style="--c:#FDB60D"></i>strict typing, Kotlin style</div>
+          <div class="pi"><i style="--c:#21D789"></i>this repo is production-critical</div>
+          <div class="pi"><i style="--c:#7D7D7D"></i>ignores suggestions while debugging</div>
+        </div>
+      </div>
+
+      <!-- Bet 2: modalities -->
+      <div class="ov" id="ov-modal">
+        <svg class="mlinks" width="1600" height="900" viewBox="0 0 1600 900">
+          <path d="M760 250 L920 400"/><path d="M1010 170 L960 380"/><path d="M1290 230 L1080 400"/><path d="M1350 470 L1130 470"/><path d="M1290 700 L1100 560"/>
+        </svg>
+        <div class="mo" style="left:700px;top:200px"><svg viewBox="0 0 80 40"><path d="M4 20 H12 L16 8 L22 32 L28 4 L34 36 L40 12 L46 28 L52 16 L58 24 H76"/></svg><span>voice</span></div>
+        <div class="mo" style="left:960px;top:120px"><svg viewBox="0 0 80 40"><rect x="6" y="6" width="26" height="18" rx="3"/><path d="M32 15 C44 15 44 30 54 30"/><circle cx="64" cy="30" r="8"/></svg><span>sketch</span></div>
+        <div class="mo" style="left:1240px;top:180px"><svg viewBox="0 0 80 40"><rect x="24" y="2" width="32" height="36" rx="3"/><path d="M30 12 H50 M30 20 H50 M30 28 H44"/></svg><span>spec</span></div>
+        <div class="mo" style="left:1300px;top:420px"><svg viewBox="0 0 80 40"><rect x="8" y="4" width="64" height="9" rx="3"/><rect x="8" y="16" width="64" height="9" rx="3"/><rect x="8" y="28" width="64" height="9" rx="3"/></svg><span>review queue</span></div>
+        <div class="mo" style="left:1240px;top:650px"><svg viewBox="0 0 80 40"><circle cx="20" cy="20" r="9"/><circle cx="40" cy="12" r="7"/><circle cx="60" cy="22" r="10"/></svg><span>many agents</span></div>
+      </div>
+
+      <!-- Bet 3: guardrails -->
+      <div class="ov" id="ov-rails">
+        <svg id="rails-svg" width="1000" height="700" viewBox="0 0 1000 700">
+          <defs><linearGradient id="roadfade" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset=".35" stop-color="#fff" stop-opacity="1"/></linearGradient>
+            <mask id="roadmask"><rect width="1000" height="700" fill="url(#roadfade)"/></mask></defs>
+          <g mask="url(#roadmask)">
+            <path class="road" d="M470 40 L120 700 M530 40 L880 700"/>
+            <path class="lane" d="M500 40 V700"/>
+            <path class="rail" id="railL" d="M455 40 L60 700"/>
+            <path class="rail" id="railR" d="M545 40 L940 700"/>
+            <g id="posts"></g>
+          </g>
+          <g id="cars"></g>
+          <text x="500" y="22" text-anchor="middle" class="rail-lab">guardrails: runtime checks, permissions, review gates</text>
+        </svg>
+      </div>
+
+      <!-- Close: recap -->
+      <div class="ov" id="ov-recap">
+        <div class="rc r1"><b>Trust</b>
+          <div class="ri"><em>I</em>models measured honestly, for your use case</div>
+          <div class="ri"><em>III</em>calibrated signals developers can read</div>
+          <div class="ri"><em>VI</em>guarantees and guardrails for agents</div>
+        </div>
+        <div class="rc r2"><b>Want to use</b>
+          <div class="ri"><em>II</em>open tools to study real use</div>
+          <div class="ri"><em>IV</em>personalized to the developer</div>
+          <div class="ri"><em>VII</em>the right IDE and modality</div>
+        </div>
+      </div>
+    </div><!-- /overlays -->
+  </div><!-- /canvas -->
+</div><!-- /stage -->
+
+<!-- ============================================================
+     STORY: the scrolling steps. Each .step is one beat.
+     data-beat must match a label in main.js.
+     ============================================================ -->
+<main id="story">
+
+  <section class="step center cover" data-beat="cover" data-ch="">
+    <div class="card">
+      <div class="eyebrow">HarmonyOS Technology Innovation Summit 2026, Amsterdam, 9 October</div>
+      <h1>Building AI Experiences Developers Can <em class="g1">Trust</em> and <em class="g2">Want to Use</em></h1>
+      <div class="zh">构建开发者信赖并乐于使用的 AI 体验</div>
+      <div class="byline"><b>Roham Koohestani</b><span>JetBrains Research, Human-AI Experience team (HAX)</span><span>TU Delft</span></div>
+    </div>
+  </section>
+
+  <section class="step" data-beat="me" data-ch="About me">
+    <div class="card">
+      <div class="eyebrow">About me</div>
+      <h2>Roham Koohestani</h2>
+      <ul>
+        <li>Researcher, Human-AI Experience team, JetBrains Research</li>
+        <li>MSc Computer Science at TU Delft</li>
+        <li>AI for software engineering, human-AI interaction, empirical methods</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="step" data-beat="dev" data-ch="Prologue">
+    <div class="card">
+      <div class="eyebrow">Prologue</div>
+      <h2>Meet Alex.</h2>
+      <p>Alex is a software engineer. We will follow him from his first AI code completions to working with agents, and look at what it took to make each step useful and trustworthy.</p>
+    </div>
+  </section>
+
+  <section class="step" data-beat="zoom" data-ch="Prologue">
+    <div class="card">
+      <h2>Let's see what Alex is doing.</h2>
+      <p class="muted">Around 2021: AI arrives in the editor.</p>
+    </div>
+  </section>
+
+  <section class="step" data-beat="a1" data-ch="I. The assistant in the editor">
+    <div class="card">
+      <div class="eyebrow c-blue">Chapter I: The assistant in the editor</div>
+      <h2>First, completion.</h2>
+      <p>Alex types a signature. The model proposes the rest as grey ghost text.</p>
+    </div>
+  </section>
+
+  <section class="step" data-beat="a2" data-ch="I. The assistant in the editor">
+    <div class="card">
+      <h2>Tab to accept.</h2>
+      <p>Alex stays in the loop on every keystroke: accept, ignore, or keep typing.</p>
+    </div>
+  </section>
+
+  <section class="step" data-beat="a3" data-ch="I. The assistant in the editor">
+    <div class="card">
+      <h2>Then, chat.</h2>
+      <p>Alex asks a question in a side panel and pastes the answer back. The AI responds to the questions he asks.</p>
+    </div>
+  </section>
+
+  <section class="step" data-beat="b1" data-ch="I. Measuring it">
+    <div class="card">
+      <div class="eyebrow c-blue">Measuring it</div>
+      <h2>How good are these models, really?</h2>
+      <p>The field answered with benchmarks. The most reported one is HumanEval. This is its task 47.</p>
+    </div>
+  </section>
+
+  <section class="step" data-beat="b2" data-ch="I. Measuring it">
+    <div class="card">
+      <h2>The median of that list is 8.</h2>
+      <p>The benchmark expects 15. Asked this task, ChatGPT-3.5 answered 15 too, which suggests it had seen the test before.</p>
+    </div>
+  </section>
+
+  <section class="step" data-beat="b3" data-ch="I. Measuring it">
+    <div class="card">
+      <h2>So we mapped the field.</h2>
+      <p>247 studies, 273 AI4SE benchmarks since 2014. A third of them are about code generation. BenchScout lets you search that map by meaning.</p>
+      <div class="cite">Koohestani, de Bekker, Koç, Izadi<br>IEEE TSE 2025</div>
+    </div>
+  </section>
+
+  <section class="step" data-beat="bf" data-ch="I. Measuring it">
+    <div class="card">
+      <h2>The same flaws, again and again.</h2>
+      <p>Reviewing HumanEval by hand, we kept finding wrong reference solutions, weak tests and vague descriptions. BenchFrame is our protocol for repairing a benchmark: review, modify, peer review, evaluate.</p>
+    </div>
+  </section>
+
+  <section class="step" data-beat="b4" data-ch="I. Measuring it">
+    <div class="card">
+      <h2>Then we re-ran the models.</h2>
+      <p>On HumanEvalNext, ten code models lose 31.2 points of pass@1 on average.</p>
+    </div>
+  </section>
+
+  <section class="step" data-beat="b5" data-ch="I. Takeaway">
+    <div class="card">
+      <div class="eyebrow c-blue">Takeaway</div>
+      <h2>Evaluate for your use case.</h2>
+      <p>The ranking reshuffles. If we build an experience on a model we never evaluated fairly, or for our own use case, it may not behave the way we expect.</p>
+    </div>
+  </section>
+
+  <section class="step" data-beat="c1" data-ch="II. Opening the black box">
+    <div class="card">
+      <div class="eyebrow c-teal">Chapter II: Opening the black box</div>
+      <h2>The best assistants are black boxes.</h2>
+      <p>Researchers can't pin model versions or see interaction data. Code4Me V2 is an open-source JetBrains plugin built as a research instrument.</p>
+    </div>
+  </section>
+
+  <section class="step" data-beat="c2" data-ch="II. Opening the black box">
+    <div class="card">
+      <h2>Every signal is a module.</h2>
+      <p>Adding a new telemetry signal means implementing one interface. Completions come back in about 200 ms.</p>
+      <div class="cite">Koohestani, Bateni, Ebrahimi, Etezadi, Karimi, Izadi<br>ICSE 2026 Demo</div>
+    </div>
+  </section>
+
+  <section class="step" data-beat="d1" data-ch="III. Trust">
+    <div class="card">
+      <div class="eyebrow c-yellow">Chapter III: Trust</div>
+      <h2>Should I accept this?</h2>
+      <p>Developers need a signal for when to trust a suggestion. The model already has one: its own confidence.</p>
+    </div>
+  </section>
+
+  <section class="step" data-beat="d2" data-ch="III. Trust">
+    <div class="card">
+      <h2>Only if confidence is calibrated.</h2>
+      <p>A calibrated 80% should be accepted about 80% of the time. We tested post-hoc calibration on real IDE usage at JetBrains.</p>
+    </div>
+  </section>
+
+  <section class="step" data-beat="d3" data-ch="III. Trust">
+    <div class="card">
+      <h2>One calibrator for everyone does not help.</h2>
+      <p>It lowers calibration error, yet predicts acceptance no better than the average rate. Calibrating per person helps, and helps more the more we know that person.</p>
+    </div>
+  </section>
+
+  <section class="step" data-beat="d4" data-ch="III. Trust">
+    <div class="card">
+      <h2>Show it as color, in the editor.</h2>
+      <p>With 3 designers and 153 professional developers, the preference was a non-numeric, color-coded signal inside the generation workflow.</p>
+      <div class="cite">Koohestani, Sergeyuk, Gros, Spiess, Titov, Devanbu, Izadi<br>FSE 2026 Industry</div>
+    </div>
+  </section>
+
+  <section class="step" data-beat="e1" data-ch="IV. Personalization">
+    <div class="card">
+      <div class="eyebrow c-pink">Chapter IV: Personalization</div>
+      <h2>No two developers accept the same things.</h2>
+      <p>For the middle 90% of developers, acceptance rates range from 2.4% to 21.2%. The model that decides whether to show a suggestion uses one threshold for all of them.</p>
+    </div>
+  </section>
+
+  <section class="step" data-beat="e2" data-ch="IV. Personalization">
+    <div class="card">
+      <h2>So we tried to learn each developer.</h2>
+      <p>Boosted trees with history, feedforward nets, recurrent user-state models. Several looked better on paper, but each pipeline kept different developers and rows, so the numbers are not comparable.</p>
+    </div>
+  </section>
+
+  <section class="step" data-beat="e2b" data-ch="IV. Personalization">
+    <div class="card">
+      <h2>Then we let an agent do the research.</h2>
+      <p>About 300 generations of agent-proposed pipelines, with the data and the metric frozen. None beat the best existing configuration. Revising the prompt changed the kinds of failures, and the outcome stayed the same.</p>
+    </div>
+  </section>
+
+  <section class="step" data-beat="e3" data-ch="IV. Personalization">
+    <div class="card">
+      <h2>The signal never reached the model.</h2>
+      <p>Labelling keeps 2.16% of raw IDE events, and consecutive accepts are nearly independent. Personalization needs complete, ordered trajectories. Hold that thought.</p>
+      <div class="cite">Negative-result study, under review</div>
+    </div>
+  </section>
+
+  <section class="step" data-beat="f1" data-ch="V. Agents">
+    <div class="card">
+      <div class="eyebrow c-violet">Chapter V: 2025, the agents arrive</div>
+      <h2>The unit of work became a task.</h2>
+      <p>Alex describes the goal. The agent reads the code, writes tests, runs them, fixes what fails, and asks for review.</p>
+    </div>
+  </section>
+
+  <section class="step" data-beat="f2" data-ch="V. Agents">
+    <div class="card">
+      <h2>Alex starts delegating.</h2>
+      <p>Several agents, several tasks, one reviewer. Everybody is still figuring out what this does to how we work, and what trust means now.</p>
+    </div>
+  </section>
+
+  <section class="step" data-beat="f3" data-ch="V. Agents">
+    <div class="card">
+      <h2>Researchers need to see this too.</h2>
+      <p>The commercial agents are black boxes again. So we are extending Code4Me to agents, with open data collection and accessible tooling, so researchers can study how developers work with them.</p>
+      <div class="cite">In progress with Cem Gungor, Ceylin Ece, Gonenc Turanli, Mehmet Orhan Yildirim, Maliheh Izadi</div>
+    </div>
+  </section>
+
+  <section class="step" data-beat="g0" data-ch="VI. Assurance">
+    <div class="card">
+      <div class="eyebrow c-red">Chapter VI: Assurance</div>
+      <h2>Agents fail in new ways.</h2>
+      <p>They loop without making progress, pick the wrong tool, or weaken a test until it passes. Each step can look fine. The problem is in the behaviour over the whole run.</p>
+    </div>
+  </section>
+
+  <section class="step" data-beat="g1" data-ch="VI. Assurance">
+    <div class="card">
+      <h2>From "will it fail?" to "how likely is failure?"</h2>
+      <p>Agents are stochastic, so we learn a probabilistic model of the agent from its own traces while it runs, and check properties on it. When the chance of success drops, we raise an alert.</p>
+    </div>
+  </section>
+
+  <section class="step" data-beat="g2" data-ch="VI. Assurance">
+    <div class="card">
+      <h2>One question led to the next.</h2>
+      <p>Each project picked up the question the previous one left open. Happy to go deeper in the Q&amp;A.</p>
+    </div>
+  </section>
+
+  <section class="step center" data-beat="h0" data-ch="VII. What comes next">
+    <div class="card">
+      <div class="eyebrow c-grad">Chapter VII: What comes next</div>
+      <h1 class="h1s">Three bets, three brain teasers.</h1>
+    </div>
+  </section>
+
+  <section class="step" data-beat="h1" data-ch="VII. Bet 1">
+    <div class="card">
+      <div class="eyebrow c-pink">Bet 1</div>
+      <h2>Personalization will be key.</h2>
+      <p>Calibration improved once it knew the person. The trigger failed because history was missing. Agents leave long, complete trajectories of how each of us works.</p>
+      <div class="teaser">What should your agent learn about you, and what should it never assume?</div>
+    </div>
+  </section>
+
+  <section class="step" data-beat="h2" data-ch="VII. Bet 2">
+    <div class="card">
+      <div class="eyebrow c-blue">Bet 2</div>
+      <h2>We will still need an IDE. An A(gentic)IDE.</h2>
+      <p>People building large systems still need a place to understand, review and own code. The open questions: what it looks like, what it can do, and how we talk to it.</p>
+      <div class="teaser">If most edits are no longer typed by you, what should your IDE show you first?</div>
+    </div>
+  </section>
+
+  <section class="step" data-beat="h3" data-ch="VII. Bet 3">
+    <div class="card">
+      <div class="eyebrow c-orange">Bet 3</div>
+      <h2>Guardrails move to the front.</h2>
+      <p>Much of the industry has shipped agents faster than it has built ways to bound them. My bet: AI safety and proper guardrails become part of the product.</p>
+      <div class="teaser">Who signs off when an agent merges to main?</div>
+    </div>
+  </section>
+
+  <section class="step" data-beat="close" data-ch="Closing">
+    <div class="card">
+      <div class="eyebrow c-grad">Closing</div>
+      <h2>Trust, and want to use.</h2>
+      <p>Trust comes from honest evaluation, calibrated signals and guarantees. Wanting to use comes from tools that fit the person and the workflow. I think the interesting work sits where the two meet.</p>
+    </div>
+  </section>
+
+  <section class="step center thanks" data-beat="thanks" data-ch="Thank you">
+    <div class="card">
+      <h1>Thank you <span class="zh-inline">谢谢</span></h1>
+      <div class="byline"><b>Roham Koohestani</b><span>roham.koohestani@jetbrains.com</span><span><a href="https://rohamkoohestani.com">rohamkoohestani.com</a></span></div>
+      <div class="thanks-co">With Maliheh Izadi, Agnia Sergeyuk, Sergey Titov, Prem Devanbu, David Gros, Claudio Spiess, Anton Podkopaev, Ziyou Li, Egor Klimov, Ateş Görpelioğlu, Burcu Kulahcioglu Ozkan, Philippe de Bekker and Begüm Koç, and the Code4Me team: Parham Bateni, Aydin Ebrahimi, Behdad Etezadi, Kiarash Karimi, Cem Gungor, Ceylin Ece, Gonenc Turanli, and Mehmet Orhan Yildirim.</div>
+    </div>
+  </section>
+</main>
+
+<!-- HUD -->
+<div id="hud">
+  <div class="prog"><i id="prog"></i></div>
+  <div class="ch" id="hud-ch"></div>
+  <div class="num"><span id="timer"></span><span id="hud-num"></span></div>
+</div>
+
+<script src="vendor/gsap.min.js"></script>
+<script src="vendor/ScrollTrigger.min.js"></script>
+<script src="main.js"></script>
+</body>
+</html>
